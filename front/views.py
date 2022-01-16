@@ -10,12 +10,12 @@ from pyecharts.charts import WordCloud, Line
 
 from . import models
 
-date_list = ["A","B","C"] #时间
+date_list = ["2022/01/06","2022/01/07","2022/01/08"] #时间
 process = [3,4,4]
-emotion = [4,4,4]
+emotion = [4,4,8]
 energy = [5,3,4]
 
-key_dict = {"You Should Add Something！":"1"} # 用于统计数据
+key_dict = {"You Should Add Some KeyWords !":"1"} # 用于统计数据
 key = [] # 关键字，用于制作词云图
 
 def get_things_date():
@@ -36,6 +36,7 @@ def get_state():
     #     energy.append(s_en)
     # for k in state_key:
     #     key.append(k)
+    global key
     key.clear()
     for get_dict_key in key_dict:
         print(get_dict_key,key_dict[get_dict_key])
