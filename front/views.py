@@ -10,7 +10,7 @@ from pyecharts.charts import WordCloud, Line
 
 from . import models
 
-date_list = [1,2,2] #时间
+date_list = ["A","B","C"] #时间
 process = [3,4,4]
 emotion = [4,4,4]
 energy = [5,3,4]
@@ -36,6 +36,7 @@ def get_state():
     #     energy.append(s_en)
     # for k in state_key:
     #     key.append(k)
+    key.clear()
     for get_dict_key in key_dict:
         print(get_dict_key,key_dict[get_dict_key])
         key.append((get_dict_key,key_dict[get_dict_key]))
@@ -44,16 +45,15 @@ def get_state():
 
 
 def line_base() -> Line:
-    # get_state()
+    get_state()
     l = (
         Line()
             .add_xaxis(date_list)
-            .add_yaxis("process",process )
-            .add_yaxis("emotion", emotion)
-            .add_yaxis("energy",energy)
-            .set_global_opts(title_opts=opts.TitleOpts(title="Line-基本示例"))
-            .render("line_base.html")
-    )
+            .add_yaxis("process",process,color='red')
+            .add_yaxis("emotion", emotion,color='blue')
+            .add_yaxis("energy",energy,color='green')
+            # .set_global_opts(title_opts=opts.TitleOpts(title="DateListThingsAnalyse"))
+    ).dump_options_with_quotes()
     return l
 
 def word_base() -> WordCloud:

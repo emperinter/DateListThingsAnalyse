@@ -14,7 +14,7 @@
     <div align="center">
 
             <p>DateListThingsAnalyse </p>
-            <div id="tab" style="width:auto; height:500px;" ></div>
+            <div id="line" style="width:auto; height:500px;" ></div>
 
             <p>Things KeyWords</p>
             <div id="word" style="width:auto; height:300px;"></div>
@@ -43,20 +43,20 @@
         }
     </script>
     <script>
-        var Barchart = echarts.init(document.getElementById('tab'), 'yellow', {renderer: 'canvas'});
+        var LineChart = echarts.init(document.getElementById('line'), 'yellow', {renderer: 'canvas'});
         $(
             function () {
-                tabletData(Barchart);
-                setInterval(tabletData, 300000);
+                LineData(LineChart);
+                setInterval(LineData, 300000);
             }
         );
-        function tabletData() {
+        function LineData() {
             $.ajax({
                 type: "GET",
-                url: "https://http://127.0.0.1:8000/front/line",
+                url: "http://127.0.0.1:8000/front/line",
                 dataType: 'json',
                 success: function (result) {
-                    Barchart.setOption(result.data);
+                    LineChart.setOption(result.data);
                 }
             });
         }
