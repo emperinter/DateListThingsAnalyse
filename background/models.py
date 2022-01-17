@@ -8,6 +8,10 @@ class Things_Date(models.Model):
     def __str__(self):
         return self.date_id
 
+class User(models.Model):
+    user_id = models.IntegerField(primary_key=True)
+    user_name = models.TextField(max_length=32,unique=True)
+    user_passwd = models.TextField(max_length=32)
 
 # 事项进度
 # class Processing(models.Model):
