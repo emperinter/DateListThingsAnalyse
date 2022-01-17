@@ -12,7 +12,7 @@ class ListThings(models.Model):
     # userid = models.ForeignKey(User,to_field='user_id',on_delete=models.CASCADE,default="-1")
     things_id = models.AutoField(primary_key=True)
     userid = models.IntegerField()
-    date = models.DateField(unique=True)
+    date = models.DateField()
     process = models.IntegerField()
     emotion = models.IntegerField()
     energy = models.IntegerField()
