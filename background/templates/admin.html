@@ -80,26 +80,37 @@
 					<p style="color:red">注：日期只有一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为NO</p>
                     <br>
 
+					<div align="center">
+						<form role="form"  method="post" action="../../front/index/">
+							<input type="hidden" class="form-control" name="userid" value="{{userid}}"/>
+							<input type="hidden" class="form-control" name="username" value="{{username}}"/>
+							<input type="hidden" class="form-control" name="passwd" value="{{passwd}}"/>
+							<button class="btn btn-danger" type="submit" >Visual Panel</button>
+						</form>
+					</div>
+
+					<br>
+
 				<table class="table">
 					<thead>
-					<tr>
-						<th>
-							Date
-						</th>
-						<th>
-							Process
-						</th>
-						<th>
-							Emotion
-						</th>
-						<th>
-							Energy
-						</th>
-						<th>
-							KeyWords
-						</th>
-					</tr>
-				</thead>
+						<tr>
+							<th>
+								Date
+							</th>
+							<th>
+								Process
+							</th>
+							<th>
+								Emotion
+							</th>
+							<th>
+								Energy
+							</th>
+							<th>
+								KeyWords
+							</th>
+						</tr>
+					</thead>
 					{% for get_things in things %}
 						<tr class="">
 							<td>{{ get_things.date }}</td>

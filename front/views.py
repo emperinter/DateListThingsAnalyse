@@ -3,6 +3,7 @@ import json
 
 from django.http import HttpResponse
 from rest_framework.views import APIView
+from django.shortcuts import render
 
 import pyecharts.options as opts
 from pyecharts.charts import WordCloud, Line
@@ -103,3 +104,27 @@ class WordView(APIView):
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse(content=open("./front/templates/index.html", encoding='utf-8').read())
+
+
+
+# 接口函数
+def post(request):
+    if request.method == 'POST':  # 当提交表单时
+        # 判断是否传参
+        if request.POST:
+            userid = request.POST.get('userid', 0)
+            username = request.POST.get('username', 0)
+            passwd = request.POST.get('passwd', 0)
+
+            # 判断参数中是否含有a和b
+            if username and passwd:
+                print(str(userid) + str(username) + str(passwd))
+                return render(request, "./index.html", {'userid': userid, 'username': username, "passwd": passwd})
+            else:
+                return render(request, "./index.html", {'userid': userid, 'username': username, "passwd": passwd})
+        else:
+            return render(request, "./index.html", {'user': "", "passwd": ""})
+            return HttpResponse('输入为空')
+    else:
+        return HttpResponse('方法错误')
+        return render(request, "./index.html", {'userid':userid, 'username': username, "passwd":passwd})
