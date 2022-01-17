@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ user }}'s Admin Panel</title>
+    <title>{{ username }}'s Admin Panel</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
 		<div class="col-md-12">
 			<nav>
 				<ol class="breadcrumb">
-					<p align="center">{{ user }}'s Admin Panel 	</p>
+					<p align="center">{{ username }}'s Admin Panel 	</p>
 				</ol>
 			</nav>
 
@@ -22,14 +22,14 @@
 			<br>
 			<br>
 
-
 			<div class="row">
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
 
 					<form role="form" class="form-inline" method="post" action="#">
-						<input type="hidden" class="form-control" id="email" name="email" value="{{user}}"/>
+						<input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
+						<input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
 						<input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
 						<div class="form-group">
 							<label for="date_picker">
@@ -42,27 +42,27 @@
 							<label for="Process">
 								Process
 							</label>
-							<input type="number" class="form-control" id="Process" name="Process" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" />
+							<input type="number" class="form-control" id="Process" name="Process" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0"  value="0"/>
 						</div>
 						<div class="form-group">
 
 							<label for="Emotion">
 								Emotion
 							</label>
-							<input type="number" class="form-control" id="Emotion" name="Emotion"  oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0"/>
+							<input type="number" class="form-control" id="Emotion" name="Emotion"  oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
 						</div>
 						<div class="form-group">
 							<label for="Energy">
 								Energy
 							</label>
-							<input type="number" class="form-control" id="Energy" name="Energy" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0"/>
+							<input type="number" class="form-control" id="Energy" name="Energy" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
 						</div>
 						<div class="form-group">
 
 							<label for="KeyWords">
 								KeyWords
 							</label>
-							<input type="text" class="form-control" id="KeyWords" name="KeyWords" />
+							<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="NO"/>
 						</div>
 						<div class="form-group">
 
@@ -75,11 +75,11 @@
 							Submit
 						</button>
 					</form>
-
                     <hr>
                     <br>
+					<p style="color:red">注：日期只有一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为NO</p>
                     <br>
-                    <br>
+
 				<table class="table">
 					<thead>
 					<tr>
@@ -100,10 +100,13 @@
 						</th>
 					</tr>
 				</thead>
-					{% for get_user in users %}
+					{% for get_things in things %}
 						<tr class="">
-							<td>{{ get_user.user_name }}</td>
-							<td>{{ get_user.user_passwd }}</td>
+							<td>{{ get_things.date }}</td>
+							<td>{{ get_things.process }}</td>
+							<td>{{ get_things.emotion }}</td>
+							<td>{{ get_things.energy }}</td>
+							<td>{{ get_things.key }}</td>
 						</tr>
 					{% endfor %}
 				</table>

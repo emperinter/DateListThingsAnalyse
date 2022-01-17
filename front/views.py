@@ -24,25 +24,11 @@ def get_things_date():
         date_list.append(m)
 
 def get_state():
-    # state_p = models.Processing.objects.values("process").first()
-    # state_e  = models.Processing.objects.filter("emotion").first()
-    # state_en = models.Processing.objects.filter("energy").first()
-    # state_key = models.Processing.objects.filter("key").first()
-    # for s in state_p:
-    #     process.append(s)
-    # for s_e in state_e:
-    #     emotion.append(s_e)
-    # for s_en in state_en:
-    #     energy.append(s_en)
-    # for k in state_key:
-    #     key.append(k)
     global key
     key.clear()
     for get_dict_key in key_dict:
         print(get_dict_key,key_dict[get_dict_key])
         key.append((get_dict_key,key_dict[get_dict_key]))
-
-
 
 
 def line_base() -> Line:
@@ -73,8 +59,6 @@ def word_base() -> WordCloud:
     return w
 
 
-
-# Create your views here.
 def response_as_json(data):
     json_str = json.dumps(data)
     response = HttpResponse(
