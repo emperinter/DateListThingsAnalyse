@@ -65,7 +65,7 @@ def post(request):
                         date_things = models.ListThings.objects.filter(userid = userid,date = date)
                         # 一天只能有一个状态，如果已有则是修改数据
                         if(date_things):
-                            date_things.update(process=process,emotion=emotion,energy=energy,key=key)
+                            date_things.update(userid=userid,date=date,process=process,emotion=emotion,energy=energy,key=key)
                         else:
                             things = models.ListThings(userid=userid,date=date,process=process,emotion=emotion,energy=energy,key=key)
                             things.save()
