@@ -16,7 +16,7 @@ process = [3,4,4]
 emotion = [4,4,8]
 energy = [5,3,4]
 
-key_dict = {"You Should Add Some KeyWords !":"1"} # 用于统计数据
+key_dict = {} # 用于统计数据
 key = [] # 关键字，用于制作词云图
 
 userid = ""
@@ -25,11 +25,12 @@ userid = ""
 def get_data():
     global userid
 
-    global key
+    getkey = []
     global process
     global emotion
     global energy
     global date_list
+    global key
 
     things = models.ListThings.objects.filter(userid=userid).order_by('date')
     #有数据的的情况下获取数据，没有则是默认数据
@@ -38,13 +39,23 @@ def get_data():
         emotion.clear()
         date_list.clear()
         energy.clear()
+        getkey.clear()
         key.clear()
         for t in things:
             date_list.append(t.date)
             process.append(t.process)
             emotion.append(t.emotion)
             energy.append(t.energy)
-            key.append(t.key)
+            getkey.append(t.key)
+
+    print(getkey)
+
+    print(getkey)
+    for m in getkey:
+        if m in key_dict:
+            key_dict[m] += 1
+        else:
+            key_dict[m] = 1
 
     for get_dict_key in key_dict:
         print(get_dict_key,key_dict[get_dict_key])
@@ -64,6 +75,8 @@ def line_base() -> Line:
     return l
 
 def word_base() -> WordCloud:
+    global key
+    print(key)
     w = (
         WordCloud()
             .add(series_name="热点分析", data_pair=key, word_size_range=[18, 88])
