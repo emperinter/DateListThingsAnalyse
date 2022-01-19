@@ -3,6 +3,8 @@ from django.db import models
 class User(models.Model):
     # 非自增ID
     # user_id = models.IntegerField(primary_key=True,auto_created=True,unique=True)
+
+    # 自增user_id
     user_id = models.AutoField(primary_key=True)
     user_name = models.TextField(max_length=32,unique=True)
     user_passwd = models.TextField(max_length=32)
@@ -10,6 +12,8 @@ class User(models.Model):
 class ListThings(models.Model):
     # things_id = models.IntegerField(primary_key=True,auto_created=True)
     # userid = models.ForeignKey(User,to_field='user_id',on_delete=models.CASCADE,default="-1")
+
+    # 自增things_id
     things_id = models.AutoField(primary_key=True)
     userid = models.IntegerField()
     date = models.DateField()
@@ -17,3 +21,9 @@ class ListThings(models.Model):
     emotion = models.IntegerField()
     energy = models.IntegerField()
     key = models.TextField()
+
+
+# 文件处理
+class ModelFileField(models.Model):
+    title = models.CharField(max_length=200)
+    file = models.FileField(upload_to='photos/%Y/%m/%d') #将格式化为时间目录

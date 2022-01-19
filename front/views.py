@@ -11,7 +11,7 @@ from pyecharts.charts import WordCloud, Line
 
 from . import models
 
-date_list = ["2022/01/06","2022/01/07","2022/01/08"] #时间
+date_list = ["2022/01/06","2022/01/07","2022/01/08"] #默认时间设计
 process = [3,4,4]
 emotion = [4,4,8]
 energy = [5,3,4]
@@ -50,7 +50,6 @@ def get_data():
 
     print(getkey)
 
-    print(getkey)
     for m in getkey:
         if m in key_dict:
             key_dict[m] += 1
@@ -58,7 +57,7 @@ def get_data():
             key_dict[m] = 1
 
     for get_dict_key in key_dict:
-        print(get_dict_key,key_dict[get_dict_key])
+        # print(get_dict_key,key_dict[get_dict_key])
         key.append((get_dict_key,key_dict[get_dict_key]))
 
 

@@ -5,6 +5,8 @@
     <title>{{ username }}'s Admin Panel</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+
 </head>
 <body>
 
@@ -12,14 +14,11 @@
     <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<nav>
-				<ol class="breadcrumb">
-					<p align="center">{{ username }}'s Admin Panel 	</p>
-				</ol>
-			</nav>
 
 			<br>
-			<br>
+			<nav>
+					<p align="center">{{ username }}'s Admin Panel 	</p>
+			</nav>
 			<br>
 
 			<div class="row">
@@ -27,40 +26,40 @@
 				</div>
 				<div class="col-md-8">
 
-					<form role="form" class="form-inline" method="post" action="#">
+					<form role="form" class="form-inline" method="post" action="#" enctype="multipart/form-data">
 						<input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
 						<input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
 						<input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
 						<div class="form-group">
 							<label for="date_picker">
-								Date
+								Date:
 							</label>
 							<input type="date" class="form-control" id="date_picker" name="date" />
 						</div>
 						<div class="form-group">
 
 							<label for="Process">
-								Process
+								Process:
 							</label>
 							<input type="number" class="form-control" id="Process" name="Process" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0"  value="0"/>
 						</div>
 						<div class="form-group">
 
 							<label for="Emotion">
-								Emotion
+								Emotion:
 							</label>
 							<input type="number" class="form-control" id="Emotion" name="Emotion"  oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
 						</div>
 						<div class="form-group">
 							<label for="Energy">
-								Energy
+								Energy:
 							</label>
 							<input type="number" class="form-control" id="Energy" name="Energy" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
 						</div>
 						<div class="form-group">
 
 							<label for="KeyWords">
-								KeyWords
+								KeyWords:
 							</label>
 							<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="NO"/>
 						</div>
@@ -69,7 +68,7 @@
 							<label for="exampleInputFile">
 								File input
 							</label>
-							<input type="file" class="form-control-file" id="exampleInputFile" />
+							<input type="file" class="form-control-file" id="exampleInputFile" name="file" />
 						</div>
 						<button type="submit" class="btn btn-primary">
 							Submit
@@ -127,6 +126,10 @@
 		</div>
 	</div>
 </div>
+</div>
+
+<div align="center">
+  CopyRight@<a href="https://www.emperinter.info/about/">emperinter</a> | <a href="https://github.com/emperinter/DateListThingsAnalyse">github</a>
 </div>
 
 <script>

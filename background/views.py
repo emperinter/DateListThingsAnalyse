@@ -1,10 +1,11 @@
-#coding=utf-8
 import json
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
+from .forms import ModelFormFile
+from django.conf import settings
 from . import models
+
 
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):
@@ -25,7 +26,6 @@ def creat_user(username,passwd):
 
 def search_user(username,passwd):
     user = models.User.objects.filter(user_name = username,user_passwd = passwd)
-    # print(user)
     if(user):
         print("用户" + str(user) +"\tuserid:" + str(user[0].user_id))
         return int(user[0].user_id)
@@ -40,6 +40,15 @@ def admin(request,userid,username,passwd):
     things = models.ListThings.objects.filter(userid = userid)
     print(things)
     return render(request,"./admin.html", {'things':things,'users':users,'userid':userid, 'username': username, "passwd":passwd})
+
+
+#创建函数处理上传文件数据
+def handle_uploaded_file(f,filename):
+    filename_path = f'{settings.MEDIA_ROOT}{filename}'  #生成文件名及路径
+    with open(filename_path,'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+        destination.close()
 
 # 接口函数
 def post(request):
@@ -61,6 +70,7 @@ def post(request):
                 if(search_user(username,passwd)):
                     print("该用户已存在" + str(username))
                     userid = search_user(username,passwd)
+
                     if(process):
                         date_things = models.ListThings.objects.filter(userid = userid,date = date)
                         # 一天只能有一个状态，如果已有则是修改数据
@@ -74,19 +84,19 @@ def post(request):
                     print("该用户不存在,准备创建!")
                     userid = creat_user(username,passwd)
                 users = models.User.objects.filter(user_id=userid, user_name=username,user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
-                things = models.ListThings.objects.filter(userid = userid)
+                things = models.ListThings.objects.filter(userid = userid).order_by('date')
                 return render(request, "./admin.html",{'things': things, 'users': users, 'userid': userid, 'username': username,"passwd": passwd})
             else:
-                # print("输入错误")
+                print("输入错误")
                 # return render(request, "./admin.html", {'user': "", "passwd": ""})
                 return HttpResponse('输入错误')
         else:
-            # print("输入为空")
             # return render(request, "./admin.html", {'user': "", "passwd": ""})
             return HttpResponse('输入为空')
     else:
         return HttpResponse('方法错误')
         # return render(request, "./admin.html", {'user': "", "passwd": ""})
+
 
 
 # Create your views here.
