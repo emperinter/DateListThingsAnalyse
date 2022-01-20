@@ -1,4 +1,5 @@
 # coding=utf-8
+import time
 import json
 
 from django.http import HttpResponse
@@ -7,7 +8,7 @@ from django.shortcuts import render
 
 import pyecharts.options as opts
 from pyecharts.charts import WordCloud, Line
-
+import _thread
 
 from . import models
 
@@ -21,8 +22,10 @@ key = [] # 关键字，用于制作词云图
 
 userid = ""
 
-
-def get_data():
+# choose
+# 1 -> Line Charts Data
+# 2 -> Word Charts Data
+def get_data(choose):
     global userid
 
     getkey = []
@@ -32,37 +35,41 @@ def get_data():
     global date_list
     global key
 
+    print("\n################"+str( time.ctime(time.time()))+"################\n")
     things = models.ListThings.objects.filter(userid=userid).order_by('date')
     #有数据的的情况下获取数据，没有则是默认数据
     if(things):
-        process.clear()
-        emotion.clear()
-        date_list.clear()
-        energy.clear()
-        getkey.clear()
-        key.clear()
-        for t in things:
-            date_list.append(t.date)
-            process.append(t.process)
-            emotion.append(t.emotion)
-            energy.append(t.energy)
-            getkey.append(t.key)
+        if(choose == 1):
+            process.clear()
+            emotion.clear()
+            date_list.clear()
+            energy.clear()
+            getkey.clear()
+            for t in things:
+                date_list.append(t.date)
+                process.append(t.process)
+                emotion.append(t.emotion)
+                energy.append(t.energy)
+                print("date: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
+        elif(choose == 2):
+            key.clear()
+            for t in things:
+                getkey.append(t.key)
 
-    print(getkey)
+            print(getkey)
+            for m in getkey:
+                if m in key_dict:
+                    key_dict[m] += 1
+                else:
+                    key_dict[m] = 1
 
-    for m in getkey:
-        if m in key_dict:
-            key_dict[m] += 1
-        else:
-            key_dict[m] = 1
+            for get_dict_key in key_dict:
+                key.append((get_dict_key,key_dict[get_dict_key]))
 
-    for get_dict_key in key_dict:
-        # print(get_dict_key,key_dict[get_dict_key])
-        key.append((get_dict_key,key_dict[get_dict_key]))
 
 
 def line_base() -> Line:
-    get_data()
+    _thread.start_new_thread(get_data,(1,))
     l = (
         Line()
             .add_xaxis(date_list)
@@ -74,8 +81,7 @@ def line_base() -> Line:
     return l
 
 def word_base() -> WordCloud:
-    global key
-    print(key)
+    _thread.start_new_thread(get_data,(2,))
     w = (
         WordCloud()
             .add(series_name="热点分析", data_pair=key, word_size_range=[18, 88])
