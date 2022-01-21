@@ -53,6 +53,7 @@ def get_data(choose):
                 print("date: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
         elif(choose == 2):
             key.clear()
+            key_dict.clear()
             for t in things:
                 getkey.append(t.key)
 

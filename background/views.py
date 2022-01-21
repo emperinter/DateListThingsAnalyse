@@ -2,10 +2,9 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .forms import ModelFormFile
 from django.conf import settings
 from . import models
-
+import  os
 
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):
@@ -48,13 +47,6 @@ def admin(request,userid,username,passwd):
     return render(request,"./admin.html", {'things':things,'users':users,'userid':userid, 'username': username, "passwd":passwd})
 
 
-#创建函数处理上传文件数据
-def handle_uploaded_file(f,filename):
-    filename_path = f'{settings.MEDIA_ROOT}{filename}'  #生成文件名及路径
-    with open(filename_path,'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-        destination.close()
 
 # 接口函数
 def post(request):
@@ -70,6 +62,26 @@ def post(request):
             energy = request.POST.get('Energy', 0)
             key = request.POST.get('KeyWords', 0)
             print("userid"+str(userid)+"\tusername"+str(username)+"\t"+str(date)+"\t"+ str(process) +"\t"+str(emotion)+"\t"+str(energy)+"\t"+str(key))
+
+            if(date):
+                # 使用request.FILES['myfile']获得文件流对象file
+                file = request.FILES['myfile']
+                if(file):
+                    print("file:\t"+str(file))
+                    # 文件储存路径，应用settings中的配置，file.name获取文件名
+                    filename = os.path.join(settings.MEDIA_ROOT, file.name)
+                    print("filename:\t"+str(filename))
+                    # 写文件
+                    with open(filename, 'wb+') as f:
+                        # file.file 获取文件字节流数据
+                        # data = file.file.read()
+                        # f.write(data)
+
+                        #file.chunks()，而不是直接使用read()方法
+                        #能确保大文件不会占用系统过多的内存。
+                        for chunk in file.chunks():
+                            f.write(chunk)
+                        print("文件存储成功！")
 
             # 判断参数中是否含有a和b
             if username and passwd:
