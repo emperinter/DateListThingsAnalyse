@@ -13,124 +13,138 @@
 
 <div>
     <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<br>
+				<nav>
+						<p align="center">{{ username }}'s Admin Panel 	</p>
+				</nav>
+				<br>
 
-			<br>
-			<nav>
-					<p align="center">{{ username }}'s Admin Panel 	</p>
-			</nav>
-			<br>
-
-			<div class="row">
-				<div class="col-md-2">
-				</div>
-				<div class="col-md-8">
-
-					<form role="form" class="form-inline" method="post" action="#" enctype="multipart/form-data">
-						<input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
-						<input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
-						<input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
-						<div class="form-group">
-							<label for="date_picker">
-								Date:
-							</label>
-							<input type="date" class="form-control" id="date_picker" name="date" />
-						</div>
-						<div class="form-group">
-
-							<label for="Process">
-								Process:
-							</label>
-							<input type="number" class="form-control" id="Process" name="Process" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0"  value="0"/>
-						</div>
-						<div class="form-group">
-
-							<label for="Emotion">
-								Emotion:
-							</label>
-							<input type="number" class="form-control" id="Emotion" name="Emotion"  oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
-						</div>
-						<div class="form-group">
-							<label for="Energy">
-								Energy:
-							</label>
-							<input type="number" class="form-control" id="Energy" name="Energy" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
-						</div>
-						<div class="form-group">
-
-							<label for="KeyWords">
-								KeyWords:
-							</label>
-							<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="NO"/>
-						</div>
-						<div class="form-group">
-
-							<label for="exampleInputFile">
-								File input
-							</label>
-							<input type="file" class="form-control-file" id="exampleInputFile" name="myfile" />
-						</div>
-						<button type="submit" class="btn btn-primary">
-							Submit
-						</button>
-					</form>
-                    <hr>
-                    <br>
-					<p style="color:red">注：某天的日期只能存在一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为NO</p>
-                    <br>
-
-					<div align="center">
-						<form role="form"  method="post" action="../../front/index/">
-							<input type="hidden" class="form-control" name="userid" value="{{userid}}"/>
-							<input type="hidden" class="form-control" name="username" value="{{username}}"/>
-							<input type="hidden" class="form-control" name="passwd" value="{{passwd}}"/>
-							<button class="btn btn-danger" type="submit" >Visual Panel</button>
-						</form>
-						<hr>
-    					<button class="btn" onclick="window.location.href='/background/index/'">Exit</button>
-						<br>
+				<div class="row">
+					<div class="col-md-2">
 					</div>
+					<div class="col-md-8">
 
-					<br>
+						<form role="form" class="form-inline" method="post" action="/background/admin/" enctype="multipart/form-data">
+							<input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
+							<input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
+							<input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
+							<div class="form-group">
+								<label for="date_picker">
+									Date:
+								</label>
+								<input type="date" class="form-control" id="date_picker" name="date" />
+							</div>
+							<div class="form-group">
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th>
-								Date
-							</th>
-							<th>
-								Process
-							</th>
-							<th>
-								Emotion
-							</th>
-							<th>
-								Energy
-							</th>
-							<th>
-								KeyWords
-							</th>
-						</tr>
-					</thead>
-					{% for get_things in things %}
-						<tr class="">
-							<td>{{ get_things.date }}</td>
-							<td>{{ get_things.process }}</td>
-							<td>{{ get_things.emotion }}</td>
-							<td>{{ get_things.energy }}</td>
-							<td>{{ get_things.key }}</td>
-						</tr>
-					{% endfor %}
-				</table>
+								<label for="Process">
+									Process:
+								</label>
+								<input type="number" class="form-control" id="Process" name="Process" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0"  value="0"/>
+							</div>
+							<div class="form-group">
 
+								<label for="Emotion">
+									Emotion:
+								</label>
+								<input type="number" class="form-control" id="Emotion" name="Emotion"  oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
+							</div>
+							<div class="form-group">
+								<label for="Energy">
+									Energy:
+								</label>
+								<input type="number" class="form-control" id="Energy" name="Energy" oninput="if(value>10)value=10;if(value.length>2)value=value.slice(0,2);if(value<0)value=0" placeholder="0" value="0"/>
+							</div>
+							<div class="form-group">
+
+								<label for="KeyWords">
+									KeyWords:
+								</label>
+								<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="NO"/>
+							</div>
+
+							<div class="form-group">
+								<label for="exampleInputFile">
+									InputFile:
+								</label>
+								<input type="file" class="form-control-file" id="exampleInputFile" name="myfile" />
+							</div>
+							<button type="submit" class="btn btn-primary">
+								Submit
+							</button>
+						</form>
+
+						<hr>
+						<br>
+						<p style="color:red">
+							<li>某天的日期只能存在一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为NO</li>
+							<li>支持文件批量导入，<a href="/static/files/DateListNotibalityAnalyse.xlsx">导入模板</a></li>
+						</p>
+						<br>
+
+
+						<div align="center">
+							<form role="form"  method="post" action="../../front/index/">
+								<input type="hidden" class="form-control" name="userid" value="{{userid}}"/>
+								<input type="hidden" class="form-control" name="username" value="{{username}}"/>
+								<input type="hidden" class="form-control" name="passwd" value="{{passwd}}"/>
+								<button class="btn btn-danger" type="submit" >Visual Panel</button>
+							</form>
+							<hr>
+							<button class="btn" onclick="window.location.href='/background/index/'">Exit</button>
+							<br>
+						</div>
+						<br>
+						</div>
+					<div class="col-md-2">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2">
+					</div>
+					<div  class="pre-scrollable col-md-8">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>
+										Date
+									</th>
+									<th>
+										Process
+									</th>
+									<th>
+										Emotion
+									</th>
+									<th>
+										Energy
+									</th>
+									<th>
+										KeyWords
+									</th>
+								</tr>
+							</thead>
+						{% for get_things in things %}
+							<tr>
+								<!-- | date:"Y-m-d 用于日期格式化"-->
+								<td>{{ get_things.date | date:"Y-m-d" }}</td>
+								<td>{{ get_things.process }}</td>
+								<td>{{ get_things.emotion }}</td>
+								<td>{{ get_things.energy }}</td>
+								<td>{{ get_things.key }}</td>
+							</tr>
+						{% endfor %}
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
+
+<br>
+<br>
 
 <div align="center">
   CopyRight@<a href="https://www.emperinter.info/about/">emperinter</a> | <a href="https://github.com/emperinter/DateListThingsAnalyse">github</a>
@@ -147,7 +161,6 @@
         var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
         document.getElementById("date_picker").value=(today);
 </script>
-
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/scripts.js"></script>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>{{information}}</title>
+<style>
+	body{
+		background-color:#444;
+		font-size:14px;
+	}
+    .content {
+        grid-area: c;
+    }
+    .container {
+        display: grid;
+        grid-gap: 5px;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: 50px 350px 50px;
+        grid-template-areas:
+            "h h h h h h h h h h h h"
+            "c c c c c c c c c c c c"
+            "f f f f f f f f f f f f";
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content" style="color:red;font-size:32px;" align="center">
+            {{information}}
+        </div>
+    </div>
+</body>
+
+</html>

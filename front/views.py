@@ -143,6 +143,8 @@ class IndexView(APIView):
         return HttpResponse(content=open("./front/templates/index.html", encoding='utf-8').read())
 
 
+def NotFound(request,information):
+    return render(request,"./404.html", {'information':information})
 
 # 接口函数
 def post(request):
@@ -160,8 +162,10 @@ def post(request):
             else:
                 return render(request, "./index.html", {'userid': userid, 'username': username, "passwd": passwd})
         else:
-            return render(request, "./index.html", {'user': "", "passwd": ""})
-            return HttpResponse('输入为空')
+            # return render(request, "./index.html", {'user': "", "passwd": ""})
+            # return HttpResponse('输入为空')
+            return render(request, "./404.html", {'information': "输入为空!"})
     else:
-        return HttpResponse('方法错误')
-        return render(request, "./index.html", {'userid':userid, 'username': username, "passwd":passwd})
+        # return HttpResponse('方法错误')
+        # return render(request, "./index.html", {'userid':userid, 'username': username, "passwd":passwd})
+        return render(request, "./404.html", {'information': "方法错误!"})

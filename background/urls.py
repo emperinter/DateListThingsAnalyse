@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     url(r'^index/$', views.IndexView.as_view(), name='index'),
-    path('login/', views.post),
-    url(r'^admin/', views.AdminView.as_view(), name='admin'),
+    path('admin/', views.admin),
+    path('auth/', views.auth),
+    path('upload_file/',views.upload_file),
+    path('404/',views.NotFound),
 ]
