@@ -10,7 +10,8 @@
 # [项目Demo：https://plan.emperinter.ga/background/index/](https://plan.emperinter.ga/background/index/)
 
 ![图片](https://user-images.githubusercontent.com/20177836/150451472-1bd5173e-000d-46ed-b37c-d314e16760c6.png)
-![图片](https://user-images.githubusercontent.com/20177836/150451231-b485de81-e17c-4364-acc7-e8ddc0e47474.png)
+![图片](https://user-images.githubusercontent.com/20177836/150672150-2e7164be-04dc-4831-8740-3e0571ec8c24.png)
+
 ![图片](https://user-images.githubusercontent.com/20177836/150451184-5b6a3f4a-8ce9-4881-9cf0-9c79e8e5c970.png)
 
 # 设计
