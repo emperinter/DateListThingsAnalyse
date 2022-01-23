@@ -11,14 +11,14 @@ class IndexView(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
 
-class AdminView(APIView):
-    def get(self, request, *args, **kwargs):
-        username = request.POST.get('username', 0)
-        passwd = request.POST.get('passwd', 0)
-        if passwd and username:
-            return HttpResponse(content=open("./background/templates/admin.html", encoding='utf-8').read())
-        else:
-            return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
+# class AdminView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         username = request.POST.get('username', 0)
+#         passwd = request.POST.get('passwd', 0)
+#         if passwd and username:
+#             return HttpResponse(content=open("./background/templates/admin.html", encoding='utf-8').read())
+#         else:
+#             return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
 
 
 def creat_user(username,passwd):
@@ -43,15 +43,16 @@ def NotFound(request,information):
     return render(request,"./404.html", {'information':information})
 
 def inserDb(userid,date,process,emotion,energy,key):
-    print("insertDb_Date|" + date + "|")
-    date_things = models.ListThings.objects.filter(userid=userid, date=date)
+    print(str(userid) + "\tinsertDb_Date|" + date + "|" + "\t" + str(process) + "\t" + str(emotion) + "\t" + str(energy) + "\t" + str(key))
+    get_userid = models.User.objects.get(user_id=userid)
+    date_things = models.ListThings.objects.filter(userid=get_userid, date=date)
     # 一天只能有一个状态，如果已有则是修改数据
     if (date_things):
         print("update")
-        date_things.update(userid=userid, date=date, process=process, emotion=emotion, energy=energy, key=key)
+        date_things.update(userid=get_userid, date=date, process=process, emotion=emotion, energy=energy, key=key)
     else:
         print("insert|"+str(date))
-        things = models.ListThings(userid=userid, date=date, process=process, emotion=emotion, energy=energy, key=key)
+        things = models.ListThings(userid=get_userid, date=date, process=process, emotion=emotion, energy=energy, key=key)
         things.save()
 
 def upload_file(file):
@@ -70,6 +71,30 @@ def upload_file(file):
             f.write(chunk)
         print("文件存储成功！")
 
+def del_data(request):
+    if request.method == 'POST':  # 当提交表单时
+        # 判断是否传参
+        if request.POST:
+            userid = request.POST.get('userid', 0)
+            username = request.POST.get('username', 0)
+            passwd = request.POST.get('passwd', 0)
+            users = models.User.objects.filter(user_id=userid, user_name=username,user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
+            things = models.ListThings.objects.filter(userid=userid)
+            things.delete()
+            return render(request, "./admin.html",
+                          {'things': things, 'users': users, 'userid': userid, 'username': username, "passwd": passwd})
+
+
+def del_account(request):
+    if request.method == 'POST':  # 当提交表单时
+        # 判断是否传参
+        if request.POST:
+            userid = request.POST.get('userid', 0)
+            users = models.User.objects.filter(user_id=userid)
+            print("删除用户：\t" + str(userid) + str(users))
+            users.delete()
+        return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
+
 
 def file_to_database(file,userid):
     print("###########################处理文件入库##################################")
@@ -82,9 +107,13 @@ def file_to_database(file,userid):
         doc['emotion'] = df.iloc[row, 2]
         doc['energy'] = df.iloc[row, 3]
         doc['key'] = df.iloc[row, 4]
-        print(type(doc['date']))
+        print(type(str(doc['date'].date())))
         print(str(userid)+"|"+str(doc['date'].date()) + "\t" + str(doc['finished']) +  "\t" +   str(doc['emotion']) +  "\t" +  str(doc['energy']) + "\t" +  str(doc['key']) )
-        inserDb(userid,str(doc['date'].date()),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
+        if(str(doc['date'].date())  != 'NaT'):
+            try:
+                inserDb(userid,str(doc['date'].date()),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
+            except:
+                print("someThing WOring !")
         print("----------------------------------------------------------------------")
     print("###########################处理文件入库完成##################################")
 
@@ -100,13 +129,11 @@ def auth(request):
             users = models.User.objects.filter(user_id=userid, user_name=username,user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
             things = models.ListThings.objects.filter(userid=userid).order_by('date')
 
-
             # 判断参数中是否含有a和b
             if username and passwd:
                 userid = search_user(username, passwd)
                 if(userid):
                     print("该用户已存在!!!" + str(username))
-                    print("跳转到admin")
                     users = models.User.objects.filter(user_id=userid, user_name=username,
                                                        user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
                     things = models.ListThings.objects.filter(userid=userid).order_by('date')
@@ -131,6 +158,7 @@ def auth(request):
 
 # 接口函数
 def admin(request):
+    print("\n\n\nadmin")
     if request.method == 'POST':  # 当提交表单时
         # 判断是否传参
         if request.POST:
@@ -145,7 +173,6 @@ def admin(request):
             print("userid"+str(userid)+"\tusername"+str(username)+"\tdate:"+str(date)+"\t"+ str(process) +"\t"+str(emotion)+"\t"+str(energy)+"\t"+str(key))
             users = models.User.objects.filter(user_id=userid, user_name=username,
                                                user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
-            things = models.ListThings.objects.filter(userid=userid).order_by('date')
 
             print("处理文件！")
             try:
@@ -155,7 +182,7 @@ def admin(request):
                 file_to_database(file,userid)
                 file_tag = 1
             except:
-                file_tag = 1
+                file_tag = 0
                 print("文件处理异常！")
 
 
@@ -167,6 +194,7 @@ def admin(request):
                 print(things)
                 return render(request, "./admin.html",{'things': things, 'users': users, 'userid': userid, 'username': username,"passwd": passwd})
             elif file_tag == 1:
+                things = models.ListThings.objects.filter(userid=userid).order_by('date')
                 return render(request, "./admin.html",{'things': things, 'users': users, 'userid': userid, 'username': username,"passwd": passwd})
             else:
                 return render(request, "./404.html", {'information': "输入错误!"})

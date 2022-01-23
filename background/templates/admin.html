@@ -61,7 +61,7 @@
 								<label for="KeyWords">
 									KeyWords:
 								</label>
-								<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="NO"/>
+								<input type="text" class="form-control" id="KeyWords" name="KeyWords" placeholder="null" value="nan"/>
 							</div>
 
 							<div class="form-group">
@@ -78,7 +78,7 @@
 						<hr>
 						<br>
 						<p style="color:red">
-							<li>某天的日期只能存在一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为NO</li>
+							<li>某天的日期只能存在一个，如果某天数据已存在，再Submit则是更新数据。Process、Emotion、Energy范围是0到10，默认为0。KeyWords默认为nan</li>
 							<li>支持文件批量导入，<a href="/static/files/DateListNotibalityAnalyse.xlsx">导入模板</a></li>
 						</p>
 						<br>
@@ -86,20 +86,44 @@
 
 						<div align="center">
 							<form role="form"  method="post" action="../../front/index/">
-								<input type="hidden" class="form-control" name="userid" value="{{userid}}"/>
-								<input type="hidden" class="form-control" name="username" value="{{username}}"/>
-								<input type="hidden" class="form-control" name="passwd" value="{{passwd}}"/>
+								<input type="hidden"  name="userid" value="{{userid}}"/>
+								<input type="hidden"  name="username" value="{{username}}"/>
+								<input type="hidden"  name="passwd" value="{{passwd}}"/>
 								<button class="btn btn-danger" type="submit" >Visual Panel</button>
 							</form>
-							<hr>
-							<button class="btn" onclick="window.location.href='/background/index/'">Exit</button>
-							<br>
 						</div>
 						<br>
+						<div align="center">
+							<hr>
+							<div class="btn-group" role="group">
+								<form  method="post" action="/background/del_account/">
+									<input type="hidden"  name="userid" value="{{userid}}"/>
+									<input type="hidden"  name="username" value="{{username}}"/>
+									<input type="hidden"  name="passwd" value="{{passwd}}"/>
+									<button class="btn btn-danger" type="submit" >Delete My Account !</button>
+								</form>
+								<span>&nbsp;</span>
+								<form  method="post" action="/background/del_data/">
+									<input type="hidden"  name="userid" value="{{userid}}"/>
+									<input type="hidden"  name="username" value="{{username}}"/>
+									<input type="hidden"  name="passwd" value="{{passwd}}"/>
+									<button class="btn btn-danger" type="submit" >Delete My Data !</button>
+								</form>
+								<span>&nbsp;</span>
+								<button class="btn btn-warning" onclick="window.location.href='/background/index/'">Exit</button>
+							</div>
+							<hr>
 						</div>
+						<br>
+
+					</div>
+
 					<div class="col-md-2">
 					</div>
+
 				</div>
+
+				<br>
 
 				<div class="row">
 					<div class="col-md-2">
@@ -123,6 +147,9 @@
 									<th>
 										KeyWords
 									</th>
+									<th>
+										Delete ?
+									</th>
 								</tr>
 							</thead>
 						{% for get_things in things %}
@@ -133,6 +160,7 @@
 								<td>{{ get_things.emotion }}</td>
 								<td>{{ get_things.energy }}</td>
 								<td>{{ get_things.key }}</td>
+								<td>{{ get_things.things_id }}</td>
 							</tr>
 						{% endfor %}
 						</table>
@@ -161,6 +189,7 @@
         var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
         document.getElementById("date_picker").value=(today);
 </script>
+
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/scripts.js"></script>

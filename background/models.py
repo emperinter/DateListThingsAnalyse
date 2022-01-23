@@ -15,15 +15,10 @@ class ListThings(models.Model):
 
     # 自增things_id
     things_id = models.AutoField(primary_key=True)
-    userid = models.IntegerField()
+    # userid = models.IntegerField()
+    userid = models.ForeignKey(User,to_field='user_id',on_delete=models.CASCADE,default="-1")
     date = models.DateField()
     process = models.IntegerField()
     emotion = models.IntegerField()
     energy = models.IntegerField()
     key = models.TextField()
-
-
-# 文件处理
-class ModelFileField(models.Model):
-    title = models.CharField(max_length=200)
-    file = models.FileField(upload_to='photos/%Y/%m/%d') #将格式化为时间目录
