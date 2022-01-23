@@ -19,48 +19,35 @@
     <div align="center">
         {{ username }}'s DateListThingsAnalyse
     </div>
-
-    <br>
-
     <div align="center">
             <div id="line" style="width:auto; height:500px;" ></div>
-                <form role="form"  method="post" action="../../background/auth/">
-						<input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
-						<input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
-						<input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
-                        <button  class="btn btn-danger" type="submit" >Admin Panel</button>
-                </form>
+                <div class="btn-group" role="group">
+                    <form role="form"  method="post" action="../../background/auth/">
+                            <input type="hidden" class="form-control" id="userid" name="userid" value="{{userid}}"/>
+                            <input type="hidden" class="form-control" id="username" name="username" value="{{username}}"/>
+                            <input type="hidden" class="form-control" id="passwd" name="passwd" value="{{passwd}}"/>
+                            <button  class="btn btn-danger" type="submit" >Admin Panel</button>
+                    </form>
+                    <span>&nbsp;</span>
+                    <form role="form"  method="post" action="/front/index/">
+                        <input type="hidden" class="form-control"  name="userid" value="{{userid}}"/>
+                        <input type="hidden" class="form-control"  name="username" value="{{username}}"/>
+                        <input type="hidden" class="form-control"  name="passwd" value="{{passwd}}"/>
+                        <button class="btn btn-success" type="submit">Refresh Data !</button>
+                    </form>
+                </div>
+                <hr>
             <div id="word" style="width:auto; height:300px;"></div>
         CopyRight@<a href="https://www.emperinter.info/about/">emperinter</a> | <a href="https://github.com/emperinter/DateListThingsAnalyse">github</a>
     </div>
 
     <script>
-        var chart = echarts.init(document.getElementById('word'), 'white', {renderer: 'canvas'});
-
-        $(
-            function () {
-                fetchData(chart);
-                setInterval(fetchData, 300000);
-            }
-        );
-
-        function fetchData() {
-            $.ajax({
-                type: "GET",
-                url: "/front/word/",
-                dataType: 'json',
-                success: function (result) {
-                    chart.setOption(result.data);
-                }
-            });
-        }
-    </script>
-    <script>
         var LineChart = echarts.init(document.getElementById('line'), 'yellow', {renderer: 'canvas'});
+
         $(
             function () {
                 LineData(LineChart);
-                setInterval(LineData, 300000);
+<!--                setInterval(LineData, 5000);-->
             }
         );
         function LineData() {
@@ -73,9 +60,27 @@
                 }
             });
         }
+
     </script>
-    <!--<script src="/static/js/jquery.min.js"></script>-->
-    <!--<script src="/static/js/bootstrap.min.js"></script>-->
-    <!--<script src="/static/js/scripts.js"></script>-->
+
+    <script>
+        var chart = echarts.init(document.getElementById('word'), 'white', {renderer: 'canvas'});
+        $(
+            function () {
+                fetchData(chart);
+<!--                setInterval(fetchData, 5000);-->
+            }
+        );
+        function fetchData() {
+            $.ajax({
+                type: "GET",
+                url: "/front/word/",
+                dataType: 'json',
+                success: function (result) {
+                    chart.setOption(result.data);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -36,27 +36,28 @@ def get_data(choose):
     global key
 
     print("\n################"+str( time.ctime(time.time()))+"################\n")
+    process.clear()
+    emotion.clear()
+    date_list.clear()
+    energy.clear()
+    getkey.clear()
+    key.clear()
+    key_dict.clear()
     things = models.ListThings.objects.filter(userid=userid).order_by('date')
     #有数据的的情况下获取数据，没有则是默认数据
     if(things):
         if(choose == 1):
-            process.clear()
-            emotion.clear()
-            date_list.clear()
-            energy.clear()
-            getkey.clear()
+            print("\n折线统计图！")
             for t in things:
                 date_list.append(t.date)
                 process.append(t.process)
                 emotion.append(t.emotion)
                 energy.append(t.energy)
-                print("date: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
+                print("\ndate: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
         elif(choose == 2):
-            key.clear()
-            key_dict.clear()
+            print("词云图！")
             for t in things:
                 getkey.append(t.key)
-
             print(getkey)
             for m in getkey:
                 if m in key_dict:
@@ -77,7 +78,6 @@ def line_base() -> Line:
             .add_yaxis("process",process,color='red')
             .add_yaxis("emotion", emotion,color='blue')
             .add_yaxis("energy",energy,color='green')
-            # .set_global_opts(title_opts=opts.TitleOpts(title="DateListThingsAnalyse"))
     ).dump_options_with_quotes()
     return l
 
@@ -142,7 +142,6 @@ class IndexView(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse(content=open("./front/templates/index.html", encoding='utf-8').read())
 
-
 def NotFound(request,information):
     return render(request,"./404.html", {'information':information})
 
@@ -162,10 +161,6 @@ def post(request):
             else:
                 return render(request, "./index.html", {'userid': userid, 'username': username, "passwd": passwd})
         else:
-            # return render(request, "./index.html", {'user': "", "passwd": ""})
-            # return HttpResponse('输入为空')
             return render(request, "./404.html", {'information': "输入为空!"})
     else:
-        # return HttpResponse('方法错误')
-        # return render(request, "./index.html", {'userid':userid, 'username': username, "passwd":passwd})
         return render(request, "./404.html", {'information': "方法错误!"})
