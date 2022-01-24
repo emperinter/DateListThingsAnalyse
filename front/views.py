@@ -36,18 +36,15 @@ def get_data(choose):
     global key
 
     print("\n################"+str( time.ctime(time.time()))+"################\n")
-    process.clear()
-    emotion.clear()
-    date_list.clear()
-    energy.clear()
-    getkey.clear()
-    key.clear()
-    key_dict.clear()
     things = models.ListThings.objects.filter(userid=userid).order_by('date')
     #有数据的的情况下获取数据，没有则是默认数据
     if(things):
         if(choose == 1):
             print("\n折线统计图！")
+            process.clear()
+            emotion.clear()
+            date_list.clear()
+            energy.clear()
             for t in things:
                 date_list.append(t.date)
                 process.append(t.process)
@@ -56,6 +53,9 @@ def get_data(choose):
                 print("\ndate: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
         elif(choose == 2):
             print("词云图！")
+            getkey.clear()
+            key.clear()
+            key_dict.clear()
             for t in things:
                 getkey.append(t.key)
             print(getkey)
