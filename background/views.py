@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse,StreamingHttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.conf import settings
@@ -117,6 +117,33 @@ def file_to_database(file,userid):
         print("----------------------------------------------------------------------")
     print("###########################处理文件入库完成##################################")
 
+
+def file_iterator(file_name, chunk_size=512):
+    with open(file_name) as f:
+        while True:
+            c = f.read(chunk_size)
+            if c:
+                yield c
+            else:
+                break
+# 获取文件
+def get_files(request):
+    if request.method == 'POST':  # 当提交表单时
+        # 判断是否传参
+        if request.POST:
+            the_file_name = "./static/files/get_file.csv"
+            data = []
+            userid = request.POST.get('userid', 0)
+            things = models.ListThings.objects.filter(userid=userid)
+            print(things)
+            for m in things:
+                data.append({"date":str(m.date),"process":str(m.process),"emotion":str(m.emotion),"energy":str(m.energy),"key":str(m.key)})
+                df = pd.DataFrame(data,columns=["date","process","emotion","energy","key"])
+                df.to_csv(the_file_name,index=False)
+            response = StreamingHttpResponse(file_iterator(the_file_name))
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment;filename="output.csv"'
+            return response
 
 # 登录判断
 def auth(request):

@@ -10,4 +10,5 @@ urlpatterns = [
     path('404/', views.NotFound),
     path('del_data/', views.del_data),
     path('del_account/', views.del_account),
+    path('get_files/', views.get_files),
 ]
