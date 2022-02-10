@@ -31,6 +31,16 @@
 | 管理页面 | 填写数据相关信息的页面，用的最多 |
 | 可视化 | 首页的一个按钮跳转 |
 
+## 部署
+
+- clone所有文件
+- 按需修改配置文件（start.ini  nginx.config配置）
+- 启动
+
+```shell
+sh start.sh
+```
+
 ## 使用流程
 
 - 注册（仅一次），注册后自动跳转到管理页面
@@ -48,3 +58,20 @@
 - ~~前端请求数据渲染因JS请求是单线程有点卡顿，有时候要来回切换许多次才行。~~
 - ~~是否能够通过后端主动向前端发送数据，而非前端主动请求数据。~~
 - ~~增量办法解决空白问题？~~
+
+
+# 使用可能产生的问题
+
+- 解决nginx+uWSGI部署Django时遇到的static文件404的问题
+
+```nginx
+    location /static {
+        alias 你主机上的static文件全路径地址;
+    }
+```
+
+- attempt to write a readonly database
+```editorconfig
+chmod 777 db.sqlite3
+chown -R 启动用户 项目文件夹    
+```

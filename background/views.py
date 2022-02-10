@@ -26,8 +26,9 @@ def creat_user(username,passwd):
     try:
         user.save()
         return(search_user(username,passwd))
-    except:
+    except Exception as e:
         print("SomeThing Woring !")
+        print("ERROR:\t" , e)
 
 
 def search_user(username,passwd):
@@ -113,7 +114,7 @@ def file_to_database(file,userid):
             try:
                 inserDb(userid,str(doc['date'].date()),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
             except:
-                print("someThing WOring !")
+                print("someThing Woring !")
         print("----------------------------------------------------------------------")
     print("###########################处理文件入库完成##################################")
 

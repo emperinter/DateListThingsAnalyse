@@ -1,0 +1,1 @@
+more uwsgi.pid | xargs kill -9

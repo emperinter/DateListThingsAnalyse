@@ -1,0 +1,1 @@
+nohup uwsgi start.ini >> run.log 2>&1 &
