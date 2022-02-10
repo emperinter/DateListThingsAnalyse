@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'front',
     'background',
-    'rest_framework'
+    'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/files')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # APPEND_SLASH=False
+
+# 用于维护ReStful_API
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
