@@ -23,6 +23,10 @@
 
 # 逻辑
 
+## APP 说明
+![图片](https://user-images.githubusercontent.com/20177836/153358788-59d0f3b4-41a8-4688-b35c-d5acadcb5f6d.png)
+
+
 ## 页面说明
 
 | 页面 | 作用 |
