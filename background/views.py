@@ -11,16 +11,6 @@ class IndexView(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
 
-# class AdminView(APIView):
-#     def get(self, request, *args, **kwargs):
-#         username = request.POST.get('username', 0)
-#         passwd = request.POST.get('passwd', 0)
-#         if passwd and username:
-#             return HttpResponse(content=open("./background/templates/admin.html", encoding='utf-8').read())
-#         else:
-#             return HttpResponse(content=open("./background/templates/index.html", encoding='utf-8').read())
-
-
 def creat_user(username,passwd):
     user = models.User(user_name = username,user_passwd = passwd)
     try:
