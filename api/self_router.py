@@ -5,5 +5,5 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'things', views.ThingsViewSet)
-router.register(r'get-user', views.UserListView,basename='get-user')
-router.register(r'get-things', views.ThingsListView,basename='get-things')
+router.register(r'user/query', views.UserListView,basename='get-user')
+router.register(r'thing/query', views.ThingsListView,basename='get-things')

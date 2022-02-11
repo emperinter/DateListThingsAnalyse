@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 
 from . import self_router
+from . import views
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
