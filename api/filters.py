@@ -7,8 +7,8 @@ class UserFilter(django_filters.rest_framework.FilterSet):
     """
     用户的过滤类
     """
-    user_name = django_filters.CharFilter(field_name="user_name",lookup_expr="exact")
-    user_passwd = django_filters.CharFilter(lookup_expr="exact")
+    # user_name = django_filters.CharFilter(field_name="user_name",lookup_expr="exact")
+    # user_passwd = django_filters.CharFilter(lookup_expr="exact")
 
     class Meta:
         # 指定模型类
@@ -22,8 +22,10 @@ class ThingsFilter(django_filters.rest_framework.FilterSet):
     """
     事件的过滤类
     """
+    userid = django_filters.NumberFilter(field_name="userid",lookup_expr="exact")
+
     class Meta:
         # 指定模型类
         model = ListThings
-        # 显示这个字段
-        fields = ['things_id', 'date', 'process', 'emotion', 'energy', 'key']
+        # 查询条件中可以出现的字段
+        fields = ['userid']
