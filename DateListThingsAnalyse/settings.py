@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'background',
     'rest_framework',
     'api',
+    'django_filters',  # 需要注册应用，
 ]
 
 MIDDLEWARE = [
@@ -142,5 +143,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    # 通用查询过滤后端
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # [drf]访问文档出现错误'AutoSchema' object has no attribute 'get_link'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
