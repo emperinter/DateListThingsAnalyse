@@ -37,6 +37,13 @@
 
 ## 部署
 
+- 安装基本依赖
+
+```shell
+pip3 install django_filter
+pip3 install coreapi
+```
+
 - clone所有文件
 - 按需修改配置文件（start.ini  nginx.config配置）
 - 启动

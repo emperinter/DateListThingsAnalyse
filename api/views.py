@@ -11,7 +11,7 @@ from .filters import ThingsFilter
 class ThingsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ListThings
-        fields = ['things_id','date', 'process', 'emotion', 'energy', 'key']
+        fields = ['userid','things_id','date', 'process', 'emotion', 'energy', 'key']
 
 # ViewSets define the view behavior.
 class ThingsViewSet(viewsets.ModelViewSet):
