@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from background.models import ListThings,User
 from rest_framework import serializers, viewsets, filters, mixins
+from rest_framework.filters import OrderingFilter
 
 from .filters import ThingsFilter
 # Create your views here.
@@ -62,6 +63,11 @@ class ThingsListView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     # 指定过滤器类
     filter_class = ThingsFilter
+
+    # 重要
+    # 排序
+    ordering_fields = ('date')
+    ordering = ('date',)
 
     # 模糊搜索的字段
     # search_fields = ['userid']
