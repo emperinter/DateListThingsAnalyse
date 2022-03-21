@@ -132,6 +132,7 @@ def get_files(request):
                 df = pd.DataFrame(data,columns=["date","process","emotion","energy","key"])
                 df.to_csv(the_file_name,index=False)
             response = StreamingHttpResponse(file_iterator(the_file_name))
+            response.charset = 'utf-8-sig' if "Windows" in request.headers.get('User-Agent') else 'utf-8'
             response['Content-Type'] = 'application/octet-stream'
             response['Content-Disposition'] = 'attachment;filename="output.csv"'
             return response
@@ -167,12 +168,14 @@ def auth(request):
                 return render(request, "./admin.html",{'things': things, 'users': users, 'userid': userid, 'username': username,"passwd": passwd})
             else:
                 print("输入错误")
-
                 return render(request, "./404.html", {'information': "输入错误!"})
         else:
             return render(request, "./404.html", {'information': "输入为空!"})
     else:
         return render(request, "./404.html", {'information': "方法错误!"})
+
+
+
 
 # 接口函数
 def admin(request):

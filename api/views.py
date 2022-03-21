@@ -1,8 +1,11 @@
+import json
+
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 
 from background.models import ListThings,User
 from rest_framework import serializers, viewsets, filters, mixins
+from rest_framework.filters import OrderingFilter
 
 from .filters import ThingsFilter
 # Create your views here.
@@ -24,6 +27,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         # 显示的字段
         # 返回的JSON字段
+        # fields = ['user_id','user_name','user_passwd']
+        # fields = ['user_id','user_name']
         fields = ['user_id']
 
 # ViewSets define the view behavior.
@@ -42,8 +47,18 @@ class UserListView(mixins.ListModelMixin, viewsets.GenericViewSet):
         user_passwd = self.request.query_params.get("user_passwd",None)
 
         if (user_name is not None) and (user_passwd is not None):
-            query_set = User.objects.filter(user_name=user_name,user_passwd=user_passwd)
-            return query_set
+            query_set = User.objects.filter(user_name=user_name)
+            # query_set = User.objects.filter(user_name=user_name,user_passwd=user_passwd)
+            if(query_set.exists()):
+                print("用户" + str(query_set) + "\tuserid:" + str(query_set[0].user_id) + "\tuser_passwd:" + str(query_set[0].user_passwd))
+                if user_passwd == query_set[0].user_passwd:
+                    return query_set
+                else:
+                    query_set = [{"user_id":"-1"}]
+                    return  query_set
+            else:
+                query_set = [{"user_id":"-2"}]
+                return query_set
 
 
 class ThingsListView(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -62,6 +77,11 @@ class ThingsListView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     # 指定过滤器类
     filter_class = ThingsFilter
+
+    # 重要
+    # 排序
+    ordering_fields = ('date')
+    ordering = ('date',)
 
     # 模糊搜索的字段
     # search_fields = ['userid']
