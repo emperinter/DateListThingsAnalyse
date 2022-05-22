@@ -103,8 +103,11 @@ def file_to_database(file,userid):
         if(str(doc['date'].date())  != 'NaT'):
             try:
                 inserDb(userid,str(doc['date'].date()),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
-            except:
+            except Exception as e:
                 print("someThing Woring !")
+                print("*".center(50, "*"))
+                print("Error:", e)
+                print("*".center(50, "*"))
         print("----------------------------------------------------------------------")
     print("###########################处理文件入库完成##################################")
 
@@ -202,9 +205,9 @@ def admin(request):
                 upload_file(file)
                 file_to_database(file,userid)
                 file_tag = 1
-            except:
+            except Exception as error:
                 file_tag = 0
-                print("文件处理异常！")
+                print("文件处理异常！\t{}\n".format(error))
 
 
             print(file_tag)
