@@ -6,6 +6,7 @@ from django.conf import settings
 from . import models
 import  os
 import pandas as pd
+import chardet
 
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):
@@ -113,7 +114,7 @@ def file_to_database(file,userid):
 
 
 def file_iterator(file_name, chunk_size=512):
-    with open(file_name) as f:
+    with open(file_name,encoding="UTF-8") as f:
         while True:
             c = f.read(chunk_size)
             if c:
@@ -159,7 +160,7 @@ def auth(request):
                     users = models.User.objects.filter(user_id=userid, user_name=username,
                                                        user_passwd=passwd)  # 将User表中的所有对象赋值给users这个变量，它是一个列表
                     things = models.ListThings.objects.filter(userid=userid).order_by('date')
-                    print(things)
+                    print(str(things))
                     return render(request, "./admin.html",
                                   {'things': things, 'users': users, 'userid': userid, 'username': username,
                                    "passwd": passwd})

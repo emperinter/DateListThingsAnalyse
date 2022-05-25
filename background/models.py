@@ -9,6 +9,9 @@ class User(models.Model):
     user_name = models.TextField(max_length=32,unique=True)
     user_passwd = models.TextField(max_length=32)
 
+    def __str__(self):
+        return self.user_name
+
 class ListThings(models.Model):
     # things_id = models.IntegerField(primary_key=True,auto_created=True)
     # userid = models.ForeignKey(User,to_field='user_id',on_delete=models.CASCADE,default="-1")
@@ -22,3 +25,6 @@ class ListThings(models.Model):
     emotion = models.IntegerField()
     energy = models.IntegerField()
     key = models.TextField()
+
+    def __str__(self):
+        return str(self.things_id)
