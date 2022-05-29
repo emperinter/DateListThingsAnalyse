@@ -3,7 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    url(r'^index/$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'index', views.IndexView.as_view(), name='index'),
     path('admin/', views.admin),
     path('auth/', views.auth),
     path('upload_file/', views.upload_file),

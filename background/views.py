@@ -1,3 +1,4 @@
+import datetime
 import json
 from django.http import HttpResponse,StreamingHttpResponse
 from django.shortcuts import render
@@ -91,19 +92,28 @@ def del_account(request):
 def file_to_database(file,userid):
     print("###########################处理文件入库##################################")
     filename = os.path.join(settings.MEDIA_ROOT, file.name)
-    df=pd.read_excel(filename,engine='openpyxl',parse_dates=True)#这个会直接默认读取到这个Excel的第一个表单
+    file_type = 0
+    print("filename:\t" + str(filename))
+    if "csv" in filename:
+        df = pd.read_csv(filename,parse_dates=True)
+    else:
+        df=pd.read_excel(filename,engine='openpyxl',parse_dates=True)#这个会直接默认读取到这个Excel的第一个表单
+        file_type = 1
     for row in df.index.values :
         doc = dict()
-        doc['date'] = df.iloc[row, 0]
+        try:
+            doc['date'] = datetime.datetime.strptime(df.iloc[row, 0],'%Y-%m-%d').date() if file_type == 0 else df.iloc[row, 0].date()
+        except Exception as e:
+            print("文件读取日期异常：",e)
+            continue
         doc['finished'] = df.iloc[row, 1]
         doc['emotion'] = df.iloc[row, 2]
         doc['energy'] = df.iloc[row, 3]
         doc['key'] = df.iloc[row, 4]
-        print(type(str(doc['date'].date())))
-        print(str(userid)+"|"+str(doc['date'].date()) + "\t" + str(doc['finished']) +  "\t" +   str(doc['emotion']) +  "\t" +  str(doc['energy']) + "\t" +  str(doc['key']) )
-        if(str(doc['date'].date())  != 'NaT'):
+        print(str(userid)+"|"+str(doc['date']) + "\t" + str(doc['finished']) +  "\t" +   str(doc['emotion']) +  "\t" +  str(doc['energy']) + "\t" +  str(doc['key']) )
+        if (doc['date'] != 'NaT'):
             try:
-                inserDb(userid,str(doc['date'].date()),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
+                inserDb(userid,str(doc['date']),int(doc['finished']),int(doc['emotion']),int(doc['energy']),doc['key'])
             except Exception as e:
                 print("someThing Woring !")
                 print("*".center(50, "*"))
@@ -121,6 +131,7 @@ def file_iterator(file_name, chunk_size=512):
                 yield c
             else:
                 break
+
 # 获取文件
 def get_files(request):
     if request.method == 'POST':  # 当提交表单时
