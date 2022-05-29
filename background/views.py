@@ -7,7 +7,6 @@ from django.conf import settings
 from . import models
 import  os
 import pandas as pd
-import chardet
 
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):

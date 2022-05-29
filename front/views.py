@@ -8,32 +8,25 @@ from django.shortcuts import render
 
 import pyecharts.options as opts
 from pyecharts.charts import WordCloud, Line
-import _thread
+from threading import Thread
 
 from . import models
 
-date_list = ["2022/01/06","2022/01/07","2022/01/08"] #默认时间设计
-process = [3,4,4]
-emotion = [4,4,8]
-energy = [5,3,4]
-
-key_dict = {} # 用于统计数据
-key = [] # 关键字，用于制作词云图
-
-userid = ""
 
 # choose
 # 1 -> Line Charts Data
 # 2 -> Word Charts Data
-def get_data(choose):
-    global userid
+def get_data(choose,userid):
 
     getkey = []
-    global process
-    global emotion
-    global energy
-    global date_list
-    global key
+
+    date_list = ["2022/01/06", "2022/01/07", "2022/01/08"]  # 默认时间设计
+    process = [3, 4, 4]
+    emotion = [4, 4, 8]
+    energy = [5, 3, 4]
+
+    key_dict = {}  # 用于统计数据
+    key = []  # 关键字，用于制作词云图
 
     print("\n################"+str( time.ctime(time.time()))+"################\n")
     things = models.ListThings.objects.filter(userid=userid).order_by('date')
@@ -51,6 +44,7 @@ def get_data(choose):
                 emotion.append(t.emotion)
                 energy.append(t.energy)
                 print("\ndate: "+str(t.date)+"\tprocess: "+str(t.process)+"\temotion: "+str(t.process)+"\tenergy: "+str(t.energy))
+            return [date_list,process,emotion,energy]
         elif(choose == 2):
             print("词云图！")
             getkey.clear()
@@ -67,25 +61,45 @@ def get_data(choose):
 
             for get_dict_key in key_dict:
                 key.append((get_dict_key,key_dict[get_dict_key]))
+            return key
 
+class DataThread(Thread):
+    def __init__(self, func, args):
+        super(DataThread, self).__init__()
+        self.func = func
+        self.args = args
 
+    def run(self):
+        self.result = self.func(*self.args)
 
-def line_base() -> Line:
-    _thread.start_new_thread(get_data,(1,))
+    def get_result(self):
+        try:
+            return self.result
+        except Exception:
+            return None
+
+def line_base(userid) -> Line:
+    tab_thread = DataThread(get_data, (1,userid))
+    tab_thread.start()
+    tab_thread.join()
+    maxDict = tab_thread.get_result()
     l = (
         Line()
-            .add_xaxis(date_list)
-            .add_yaxis("process",process,color='red')
-            .add_yaxis("emotion", emotion,color='blue')
-            .add_yaxis("energy",energy,color='green')
+            .add_xaxis(maxDict[0])
+            .add_yaxis("process",maxDict[1],color='red')
+            .add_yaxis("emotion", maxDict[2],color='blue')
+            .add_yaxis("energy",maxDict[3],color='green')
     ).dump_options_with_quotes()
     return l
 
-def word_base() -> WordCloud:
-    _thread.start_new_thread(get_data,(2,))
+def word_base(userid) -> WordCloud:
+    tab_thread = DataThread(get_data, (2,userid))
+    tab_thread.start()
+    tab_thread.join()
+    maxDict = tab_thread.get_result()
     w = (
         WordCloud()
-            .add(series_name="热点分析", data_pair=key, word_size_range=[18, 88])
+            .add(series_name="热点分析", data_pair=maxDict, word_size_range=[18, 88])
             .set_global_opts(
             title_opts=opts.TitleOpts(
                 title_textstyle_opts=opts.TextStyleOpts(font_size=64)
@@ -132,11 +146,12 @@ JsonError = json_error
 
 class LineView(APIView):
     def get(self, request, *args, **kwargs):
-        return JsonResponse(json.loads(line_base()))
+        print(request.GET.get("userid"))
+        return JsonResponse(json.loads(line_base(request.GET.get("userid"))))
 
 class WordView(APIView):
     def get(self, request, *args, **kwargs):
-        return JsonResponse(json.loads(word_base()))
+        return JsonResponse(json.loads(word_base(request.GET.get("userid"))))
 
 class IndexView(APIView):
     def get(self, request, *args, **kwargs):

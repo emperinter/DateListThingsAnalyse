@@ -55,7 +55,7 @@
         function LineData() {
             $.ajax({
                 type: "GET",
-                url: "/front/line/",
+                url: "/front/line/?userid={{userid}}",
                 dataType: 'json',
                 success: function (result) {
                     LineChart.setOption(result.data);
@@ -73,7 +73,7 @@
         function fetchData() {
             $.ajax({
                 type: "GET",
-                url: "/front/word/",
+                url: "/front/word/?userid={{userid}}",
                 dataType: 'json',
                 success: function (result) {
                     chart.setOption(result.data);
